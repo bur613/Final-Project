@@ -8,8 +8,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Screen implements com.badlogic.gdx.Screen {
   private Snake game;
-  private int width = 600;
-  private int height = 1000;
+  private int width = 1280;
+  private int height = 720;
 
   private OrthographicCamera camera = new OrthographicCamera(width, height);
   private Viewport viewport;
