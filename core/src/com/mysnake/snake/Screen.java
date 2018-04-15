@@ -14,6 +14,8 @@ public class Screen implements com.badlogic.gdx.Screen {
   private OrthographicCamera camera = new OrthographicCamera(width, height);
   private Viewport viewport;
 
+  private GameState gameState = new GameState();
+
   public Screen(Snake game) {
     this.game = game;
     camera.setToOrtho(false, width, height);
@@ -30,8 +32,11 @@ public class Screen implements com.badlogic.gdx.Screen {
   public void render(float delta) {
     camera.update();
     viewport.apply();
+    gameState.update(delta);
+
     Gdx.gl.glClearColor(0, 0, 0, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    gameState.draw(width, height, camera);
   }
 
   @Override
