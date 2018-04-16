@@ -2,6 +2,7 @@ package com.mysnake.snake;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 
 public class Controls {
 
@@ -14,13 +15,17 @@ public class Controls {
   }
 
   public void update() {
-    if (Gdx.input.isKeyPressed(Input.Keys.UP) && currentDirection != 2) {
+    if ((Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Keys.W))
+        && currentDirection != 2) {
       nextDirection = 0;
-    } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && currentDirection != 3) {
+    } else if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Keys.D))
+        && currentDirection != 3) {
       nextDirection = 1;
-    } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && currentDirection != 0) {
+    } else if ((Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Keys.S))
+        && currentDirection != 0) {
       nextDirection = 2;
-    } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && currentDirection != 1) {
+    } else if ((Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Keys.A))
+        && currentDirection != 1) {
       nextDirection = 3;
     }
   }
