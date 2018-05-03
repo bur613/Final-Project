@@ -9,12 +9,11 @@ public class GameState {
 
   private int boardSize = 75; // How many squares are on the board
   private float mTimer = 0;
-
   private ShapeRenderer shapeRenderer = new ShapeRenderer();
-
   private Queue<SnakeBody> mBody = new Queue<SnakeBody>();
-
   private Controls controls = new Controls();
+  private Food food = new Food(boardSize);
+  private int snakeLength = 3;
 
   public GameState() {
     mBody.addLast(new SnakeBody(15, 15, boardSize)); // Head of the Snake
@@ -57,7 +56,23 @@ public class GameState {
         mBody.addFirst(new SnakeBody(headX, headY + 1, boardSize));
         break;
     }
-    mBody.removeLast();
+
+    if (mBody.first().getX() == food.getX() && mBody.first().getY() == food.getY()) {
+      snakeLength++;
+      food.randPos(boardSize);
+    }
+
+    //Death Process
+    for (int i = 1; i < mBody.size; i++) {
+      if (mBody.get(i).getX() == mBody.first().getX() && mBody.get(i).getY() == mBody.first()
+          .getY()) {
+        snakeLength = 3;
+      }
+    }
+
+    if (mBody.size - 1 >= snakeLength) {
+      mBody.removeLast();
+    }
   }
 
   public void draw(int width, int height, OrthographicCamera camera) {
@@ -67,6 +82,11 @@ public class GameState {
     shapeRenderer.setColor(1, 1, 1, 1);
 
     float scaleSnake = width / boardSize;
+
+    shapeRenderer.setColor(1, 0, 0, 1);
+    shapeRenderer.rect(food.getX() * scaleSnake, food.getY() * scaleSnake, scaleSnake, scaleSnake);
+
+    shapeRenderer.setColor(1, 1, 1, 1);
     for (SnakeBody sb : mBody) {
       shapeRenderer.rect(sb.getX() * scaleSnake, sb.getY() * scaleSnake, scaleSnake, scaleSnake);
     }
