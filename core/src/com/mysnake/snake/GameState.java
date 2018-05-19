@@ -16,9 +16,9 @@ public class GameState {
   private int snakeLength = 3;
 
   public GameState() {
-    mBody.addLast(new SnakeBody(15, 15, boardSize)); // Head of the Snake
-    mBody.addLast(new SnakeBody(15, 14, boardSize));
-    mBody.addLast(new SnakeBody(15, 13, boardSize)); // Tail
+    mBody.addLast(new SnakeBody(36, 21, boardSize)); // Head of the Snake
+    mBody.addLast(new SnakeBody(36, 20, boardSize));
+    mBody.addLast(new SnakeBody(36, 19, boardSize)); // Tail
   }
 
   public void update(float delta) {
@@ -65,12 +65,13 @@ public class GameState {
     //Death Process
     for (int i = 1; i < mBody.size; i++) {
       if (mBody.get(i).getX() == mBody.first().getX() && mBody.get(i).getY() == mBody.first()
-          .getY()) {
+          .getY() || mBody.get(i).getX() == boardSize || mBody.get(i).getX() < 0
+          || mBody.get(i).getY() == boardSize - 33 || mBody.get(i).getY() < 0) {
         snakeLength = 3;
       }
     }
 
-    if (mBody.size - 1 >= snakeLength) {
+    while (mBody.size - 1 >= snakeLength) {
       mBody.removeLast();
     }
   }
@@ -80,7 +81,12 @@ public class GameState {
     shapeRenderer.begin(ShapeType.Filled);
 
     shapeRenderer.setColor(1, 1, 1, 1);
+    shapeRenderer.rect(0, 0, width, height);
 
+    shapeRenderer.setColor(0, 0, 0, 1);
+    shapeRenderer.rect(0 + 5, 0 + 5, width - 5 * 2, height - 5 * 2);
+
+    shapeRenderer.setColor(1, 1, 1, 1);
     float scaleSnake = width / boardSize;
 
     shapeRenderer.setColor(1, 0, 0, 1);

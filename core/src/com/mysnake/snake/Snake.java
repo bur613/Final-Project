@@ -22,4 +22,16 @@ public class Snake extends Game {
 	public void dispose () {
 		batch.dispose();
 	}
+
+  public void setMap1Screen() {
+    this.setScreen(new Map1(this));
+  }
+
+  public void setMap2Screen() {
+    this.setScreen(new Map2(this));
+  }
+
+  public void setMap3Screen() {
+    this.setScreen(new Map3(this));
+  }
 }
