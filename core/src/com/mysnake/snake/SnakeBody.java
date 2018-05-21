@@ -6,14 +6,27 @@ public class SnakeBody {
   private int y;
 
   public SnakeBody(int x, int y, int boardSize) {
-    this.x = x % boardSize;
-    if (this.x < 0) {
-      this.x += boardSize;
+    if (x == boardSize) {
+      x = 36;
+      y = 21;
     }
 
+    if (y == boardSize - 33) {
+      y = 21;
+      x = 36;
+    }
+
+    this.x = x % boardSize;
     this.y = y % boardSize;
+
+    if (this.x < 0) {
+      this.x = 36;
+      this.y = 21;
+    }
+
     if (this.y < 0) {
-      this.y += boardSize;
+      this.y = 21;
+      this.x = 36;
     }
   }
 

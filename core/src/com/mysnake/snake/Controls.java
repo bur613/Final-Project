@@ -14,6 +14,14 @@ public class Controls {
     return nextDirection;
   }
 
+  public void setCurrentDirection(int x) {
+    currentDirection = x;
+  }
+
+  public void setNextDirection(int x) {
+    nextDirection = x;
+  }
+
   public void update() {
     if ((Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Keys.W))
         && currentDirection != 2) {
