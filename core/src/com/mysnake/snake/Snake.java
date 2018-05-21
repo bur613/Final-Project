@@ -4,11 +4,13 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Snake extends Game {
-	SpriteBatch batch;
+    private Texture mattoonFood;
+	private SpriteBatch batch;
 	int x = 0;
 	
 	@Override
 	public void create () {
+	    mattoonFood = new Texture(Gdx.files.internal("maton.jpg"));
 		batch = new SpriteBatch();
 		this.setScreen(new Screen(this));
 	}
