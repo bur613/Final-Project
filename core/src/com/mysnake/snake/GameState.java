@@ -13,6 +13,8 @@ public class GameState {
   private Queue<SnakeBody> mBody = new Queue<SnakeBody>();
   private Controls controls = new Controls();
   private Food food = new Food(boardSize);
+  private ArrayList<Wall> walls = new ArrayList<Wall>();
+  private int score = 0;
   private int snakeLength = 3;
 
   public GameState() {
@@ -59,6 +61,7 @@ public class GameState {
 
     if (mBody.first().getX() == food.getX() && mBody.first().getY() == food.getY()) {
       snakeLength++;
+      score++;
       food.randPos(boardSize);
     }
 
@@ -68,6 +71,7 @@ public class GameState {
           .getY() || mBody.get(i).getX() == boardSize || mBody.get(i).getX() < 0
           || mBody.get(i).getY() == boardSize - 33 || mBody.get(i).getY() < 0) {
         snakeLength = 3;
+        score = 0;
       }
     }
 
