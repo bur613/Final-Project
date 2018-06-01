@@ -13,9 +13,11 @@ public class GameState {
   private Queue<SnakeBody> mBody = new Queue<SnakeBody>();
   private Controls controls = new Controls();
   private Food food = new Food(boardSize);
+  private Portals portal = new Portals(boardSize);
   private ArrayList<Wall> walls = new ArrayList<Wall>();
   private int score = 0;
   private int snakeLength = 3;
+  private int spawnFood = true;
 
   public GameState() {
     mBody.addLast(new SnakeBody(36, 21, boardSize)); // Head of the Snake
@@ -79,6 +81,13 @@ public class GameState {
       mBody.removeLast();
     }
   }
+  
+  if (score == 10) {
+    portal.randPos();
+    spawnFood = false;
+  } else {
+    spawnFood = true;
+  }
 
   public void draw(int width, int height, OrthographicCamera camera) {
     shapeRenderer.setProjectionMatrix(camera.combined);
@@ -92,10 +101,12 @@ public class GameState {
 
     shapeRenderer.setColor(1, 1, 1, 1);
     float scaleSnake = width / boardSize;
-
-    shapeRenderer.setColor(1, 0, 0, 1);
-    shapeRenderer.rect(food.getX() * scaleSnake, food.getY() * scaleSnake, scaleSnake, scaleSnake);
-
+    
+    if (spawnFood) {
+      shapeRenderer.setColor(1, 0, 0, 1);
+      shapeRenderer.rect(food.getX() * scaleSnake, food.getY() * scaleSnake, scaleSnake, scaleSnake);
+    }
+    
     shapeRenderer.setColor(1, 1, 1, 1);
     for (SnakeBody sb : mBody) {
       shapeRenderer.rect(sb.getX() * scaleSnake, sb.getY() * scaleSnake, scaleSnake, scaleSnake);
