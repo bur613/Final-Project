@@ -15,7 +15,7 @@ public class Screen implements com.badlogic.gdx.Screen {
   private OrthographicCamera camera = new OrthographicCamera(width, height);
   private Viewport viewport;
 
-  private GameState gameState = new GameState();
+  private GameState gameState = new GameState(game);
 
   public Screen(Snake game) {
     this.game = game;

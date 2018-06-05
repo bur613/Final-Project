@@ -23,6 +23,10 @@ public class Controls {
   }
 
   public void update() {
+    if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+      Gdx.app.exit();
+    }
+
     if ((Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Keys.W))
         && currentDirection != 2) {
       nextDirection = 0;

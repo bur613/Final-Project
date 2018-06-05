@@ -1,5 +1,7 @@
 package com.mysnake.snake;
 
+import static com.mysnake.snake.Snake.difficulty;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -8,6 +10,7 @@ import java.util.ArrayList;
 
 public class GameState {
 
+  Snake game;
   private static int score = 0;
   private static int snakeLength = 3;
   private static int currentMap = 0;
@@ -24,13 +27,19 @@ public class GameState {
   private boolean spawnFood = true;
 
 
-  public GameState() {
+  public GameState(Snake game) {
+    this.game = game;
+
     mBody.addLast(new SnakeBody(36, 21, boardSize)); // Head of the Snake
     mBody.addLast(new SnakeBody(36, 20, boardSize));
     mBody.addLast(new SnakeBody(36, 19, boardSize)); // Tail
 
     for (int i = 5; i < 53; i++) { // Map 1
       map1.add(new Wall(i, 26));
+    }
+
+    for (int i = 10; i < 27; i++) { // Map 1
+      map1.add(new Wall(34, i));
     }
 
     for (int i = 5; i < 53; i++) { // Map 2
@@ -53,6 +62,14 @@ public class GameState {
       map3.add(new Wall(1, i));
     }
 
+    for (int i = 3; i < 22; i++) { // Map 3
+      map3.add(new Wall(30, i));
+    }
+
+    for (int i = 17; i < 40; i++) { // Map 3
+      map3.add(new Wall(65, i));
+    }
+
   }
 
   public static void death() {
@@ -64,9 +81,21 @@ public class GameState {
     controls.update();
     mTimer += delta;
 
-    if (mTimer > 0.13f) {
-      mTimer = 0;
-      advance();
+    if (difficulty == 1) {
+      if (mTimer > 0.13f) {
+        mTimer = 0;
+        advance();
+      }
+    } else if (difficulty == 2) {
+      if (mTimer > 0.09f) {
+        mTimer = 0;
+        advance();
+      }
+    } else if (difficulty == 0) {
+      if (mTimer > 0.17f) {
+        mTimer = 0;
+        advance();
+      }
     }
   }
 
@@ -107,8 +136,18 @@ public class GameState {
             food.randPos(boardSize);
           }
         }
+        for (Wall x : map2) {
+          if (x.getX() == food.getX() && x.getY() == food.getY()) {
+            food.randPos(boardSize);
+          }
+        }
       } else if (currentMap == 2) {
         for (Wall x : map2) {
+          if (x.getX() == food.getX() && x.getY() == food.getY()) {
+            food.randPos(boardSize);
+          }
+        }
+        for (Wall x : map3) {
           if (x.getX() == food.getX() && x.getY() == food.getY()) {
             food.randPos(boardSize);
           }
@@ -169,7 +208,7 @@ public class GameState {
       mBody.removeLast();
     }
 
-    if (score == 2 && currentMap != 3) {
+    if (score == 1 && currentMap != 3) {
       portal.randPos(boardSize);
 
       if (currentMap == 1) {
@@ -178,8 +217,18 @@ public class GameState {
             portal.randPos(boardSize);
           }
         }
+        for (Wall x : map2) {
+          if (x.getX() == portal.getX() && x.getY() == portal.getY()) {
+            portal.randPos(boardSize);
+          }
+        }
       } else if (currentMap == 2) {
         for (Wall x : map2) {
+          if (x.getX() == portal.getX() && x.getY() == portal.getY()) {
+            portal.randPos(boardSize);
+          }
+        }
+        for (Wall x : map3) {
           if (x.getX() == portal.getX() && x.getY() == portal.getY()) {
             portal.randPos(boardSize);
           }
@@ -205,7 +254,7 @@ public class GameState {
     shapeRenderer.rect(0, 0, width, height);
 
     shapeRenderer.setColor(0, 0, 0, 1);
-    shapeRenderer.rect(0 + 5, 0 + 5, width - 5 * 2, height - 5 * 2);
+    shapeRenderer.rect(5, 5, width - 5 * 2, height - 5 * 2);
 
     shapeRenderer.setColor(1, 1, 1, 1);
     float scaleSnake = width / boardSize;

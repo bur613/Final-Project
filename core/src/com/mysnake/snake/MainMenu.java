@@ -1,10 +1,11 @@
 package com.mysnake.snake;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -12,10 +13,9 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 
 public class MainMenu implements Screen {
 
-  private Game game;
-  private int difficulty = 1;
+  private Snake game;
   private SpriteBatch sb;
-  private Controls keys = new Controls();
+  private Texture maton;
 
   private BitmapFont titleFont;
   private BitmapFont font;
@@ -28,11 +28,15 @@ public class MainMenu implements Screen {
   public MainMenu(Snake game) {
     this.game = game;
 
+    maton = new Texture(Gdx.files.internal("maton.jpg"));
+
     sb = new SpriteBatch();
 
     FreeTypeFontGenerator x = new FreeTypeFontGenerator(
         Gdx.files.internal("fonts/BungeeShade-Regular.ttf"));
     FreeTypeFontParameter y = new FreeTypeFontParameter();
+
+    currentItem = 0;
 
     y.size = 99;
 
@@ -44,8 +48,9 @@ public class MainMenu implements Screen {
     font = x.generateFont(y);
 
     menuItems = new String[]{
-        "Play",
-        "Difficulty",
+        "Slow",
+        "Medium",
+        "Fast",
         "Quit"
     };
   }
@@ -59,7 +64,12 @@ public class MainMenu implements Screen {
   public void render(float delta) {
     Gdx.gl.glClearColor(1, 1, 1, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+    handleInput();
+
     sb.begin();
+
+    sb.draw(maton, 510, 188);
 
     titleFont.draw(sb, title, 720 / 2, 550);
 
@@ -73,6 +83,35 @@ public class MainMenu implements Screen {
     }
 
     sb.end();
+  }
+
+  private void handleInput() {
+    if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
+      if (currentItem >= 0 && currentItem != menuItems.length - 1) {
+        currentItem++;
+      }
+    }
+
+    if (Gdx.input.isKeyJustPressed(Keys.UP)) {
+      if (currentItem <= menuItems.length - 1 && currentItem != 0) {
+        currentItem--;
+      }
+    }
+
+    if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+      if (currentItem == 0) {
+        game.difficulty = 0;
+        game.setGameScreen();
+      } else if (currentItem == 1) {
+        game.difficulty = 1;
+        game.setGameScreen();
+      } else if (currentItem == 2) {
+        game.difficulty = 2;
+        game.setGameScreen();
+      } else if (currentItem == 3) {
+        Gdx.app.exit();
+      }
+    }
   }
 
   @Override
