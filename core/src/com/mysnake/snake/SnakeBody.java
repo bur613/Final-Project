@@ -41,4 +41,9 @@ public class SnakeBody {
   public int getY() {
     return y;
   }
+
+  public void deathPos() {
+    this.y = 21;
+    this.x = 36;
+  }
 }

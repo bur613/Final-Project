@@ -10,7 +10,7 @@ public class Portals {
   public Portals(int boardSize) {
     randPos(boardSize);
   }
-  
+
   public void randPos(int boardSize) {
     x = MathUtils.random(boardSize - 2);
     y = MathUtils.random(boardSize - 34);

@@ -8,8 +8,10 @@ import java.util.ArrayList;
 
 public class GameState {
 
-  private int boardSize = 75; // How many squares are on the board
   private static int score = 0;
+  private static int snakeLength = 3;
+  private static int currentMap = 0;
+  private int boardSize = 75; // How many squares are on the board
   private float mTimer = 0;
   private ShapeRenderer shapeRenderer = new ShapeRenderer();
   private Queue<SnakeBody> mBody = new Queue<SnakeBody>();
@@ -19,9 +21,7 @@ public class GameState {
   private ArrayList<Wall> map1 = new ArrayList<Wall>();
   private ArrayList<Wall> map2 = new ArrayList<Wall>();
   private ArrayList<Wall> map3 = new ArrayList<Wall>();
-  private static int snakeLength = 3;
   private boolean spawnFood = true;
-  private static int currentMap = 0;
 
 
   public GameState() {
@@ -30,11 +30,11 @@ public class GameState {
     mBody.addLast(new SnakeBody(36, 19, boardSize)); // Tail
 
     for (int i = 5; i < 53; i++) { // Map 1
-      map1.add(new Wall(i, 21));
+      map1.add(new Wall(i, 26));
     }
 
     for (int i = 5; i < 53; i++) { // Map 2
-      map2.add(new Wall(i, 21));
+      map2.add(new Wall(i, 26));
     }
 
     for (int i = 5; i < 35; i++) { // Map 2
@@ -42,7 +42,7 @@ public class GameState {
     }
 
     for (int i = 5; i < 53; i++) { // Map 3
-      map3.add(new Wall(i, 21));
+      map3.add(new Wall(i, 26));
     }
 
     for (int i = 5; i < 35; i++) { // Map 3
@@ -52,6 +52,7 @@ public class GameState {
     for (int i = 7; i < 18; i++) { // Map 3
       map3.add(new Wall(1, i));
     }
+
   }
 
   public static void death() {
@@ -99,11 +100,58 @@ public class GameState {
       snakeLength++;
       score++;
       food.randPos(boardSize);
+
+      if (currentMap == 1) {
+        for (Wall x : map1) {
+          if (x.getX() == food.getX() && x.getY() == food.getY()) {
+            food.randPos(boardSize);
+          }
+        }
+      } else if (currentMap == 2) {
+        for (Wall x : map2) {
+          if (x.getX() == food.getX() && x.getY() == food.getY()) {
+            food.randPos(boardSize);
+          }
+        }
+      } else if (currentMap == 3) {
+        for (Wall x : map3) {
+          if (x.getX() == food.getX() && x.getY() == food.getY()) {
+            food.randPos(boardSize);
+          }
+        }
+      }
     }
 
     if (mBody.first().getX() == portal.getX() && mBody.first().getY() == portal.getY()) {
       spawnFood = true;
       currentMap++;
+    }
+
+    for (Wall x : map1) {
+      if (mBody.first().getX() == x.getX() && mBody.first().getY() == x.getY() && currentMap == 1) {
+        spawnFood = true;
+        score = 0;
+        snakeLength = 3;
+        mBody.first().deathPos();
+      }
+    }
+
+    for (Wall x : map2) {
+      if (mBody.first().getX() == x.getX() && mBody.first().getY() == x.getY() && currentMap == 2) {
+        spawnFood = true;
+        score = 0;
+        snakeLength = 3;
+        mBody.first().deathPos();
+      }
+    }
+
+    for (Wall x : map3) {
+      if (mBody.first().getX() == x.getX() && mBody.first().getY() == x.getY() && currentMap == 3) {
+        spawnFood = true;
+        score = 0;
+        snakeLength = 3;
+        mBody.first().deathPos();
+      }
     }
 
     //Death Process
@@ -113,6 +161,7 @@ public class GameState {
           || mBody.get(i).getY() == boardSize - 33 || mBody.get(i).getY() < 0) {
         snakeLength = 3;
         score = 0;
+        mBody.first().deathPos();
       }
     }
 
@@ -120,12 +169,32 @@ public class GameState {
       mBody.removeLast();
     }
 
-    if (score == 2) {
+    if (score == 2 && currentMap != 3) {
       portal.randPos(boardSize);
+
+      if (currentMap == 1) {
+        for (Wall x : map1) {
+          if (x.getX() == portal.getX() && x.getY() == portal.getY()) {
+            portal.randPos(boardSize);
+          }
+        }
+      } else if (currentMap == 2) {
+        for (Wall x : map2) {
+          if (x.getX() == portal.getX() && x.getY() == portal.getY()) {
+            portal.randPos(boardSize);
+          }
+        }
+      } else if (currentMap == 3) {
+        for (Wall x : map3) {
+          if (x.getX() == portal.getX() && x.getY() == portal.getY()) {
+            portal.randPos(boardSize);
+          }
+        }
+      }
+
       spawnFood = false;
     }
   }
-
 
 
   public void draw(int width, int height, OrthographicCamera camera) {
@@ -140,35 +209,36 @@ public class GameState {
 
     shapeRenderer.setColor(1, 1, 1, 1);
     float scaleSnake = width / boardSize;
-    
+
     if (spawnFood) {
       shapeRenderer.setColor(1, 0, 0, 1);
-      shapeRenderer.rect(food.getX() * scaleSnake, food.getY() * scaleSnake, scaleSnake, scaleSnake);
+      shapeRenderer
+          .rect(food.getX() * scaleSnake, food.getY() * scaleSnake, scaleSnake, scaleSnake);
     }
 
     if (currentMap == 1) {
-      for (int j = 0; j < map1.size(); j++) {
+      for (Wall x : map1) {
         shapeRenderer.setColor(0, 0, 1, 1);
         shapeRenderer
-            .rect(map1.get(j).getX() * scaleSnake, map1.get(j).getY() * scaleSnake, scaleSnake,
+            .rect(x.getX() * scaleSnake, x.getY() * scaleSnake, scaleSnake,
                 scaleSnake);
       }
     }
 
     if (currentMap == 2) {
-      for (int j = 0; j < map2.size(); j++) {
+      for (Wall x : map2) {
         shapeRenderer.setColor(0, 0, 1, 1);
         shapeRenderer
-            .rect(map2.get(j).getX() * scaleSnake, map2.get(j).getY() * scaleSnake, scaleSnake,
+            .rect(x.getX() * scaleSnake, x.getY() * scaleSnake, scaleSnake,
                 scaleSnake);
       }
     }
 
     if (currentMap == 3) {
-      for (int j = 0; j < map3.size(); j++) {
+      for (Wall x : map3) {
         shapeRenderer.setColor(0, 0, 1, 1);
         shapeRenderer
-            .rect(map3.get(j).getX() * scaleSnake, map3.get(j).getY() * scaleSnake, scaleSnake,
+            .rect(x.getX() * scaleSnake, x.getY() * scaleSnake, scaleSnake,
                 scaleSnake);
       }
     }
@@ -179,7 +249,7 @@ public class GameState {
           .rect(portal.getX() * scaleSnake, portal.getY() * scaleSnake, scaleSnake, scaleSnake);
       score = 0;
     }
-    
+
     shapeRenderer.setColor(1, 1, 1, 1);
     for (SnakeBody sb : mBody) {
       shapeRenderer.rect(sb.getX() * scaleSnake, sb.getY() * scaleSnake, scaleSnake, scaleSnake);
