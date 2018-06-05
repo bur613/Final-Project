@@ -1,5 +1,7 @@
 package com.mysnake.snake;
 
+import com.badlogic.gdx.math.MathUtils;
+
 public class Portals {
 
   private int x;

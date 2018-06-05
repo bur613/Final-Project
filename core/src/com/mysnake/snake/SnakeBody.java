@@ -9,11 +9,13 @@ public class SnakeBody {
     if (x == boardSize) {
       x = 36;
       y = 21;
+      GameState.death();
     }
 
     if (y == boardSize - 33) {
       y = 21;
       x = 36;
+      GameState.death();
     }
 
     this.x = x % boardSize;
@@ -22,11 +24,13 @@ public class SnakeBody {
     if (this.x < 0) {
       this.x = 36;
       this.y = 21;
+      GameState.death();
     }
 
     if (this.y < 0) {
       this.y = 21;
       this.x = 36;
+      GameState.death();
     }
   }
 

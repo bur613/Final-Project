@@ -1,10 +1,13 @@
 package com.mysnake.snake;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Snake extends Game {
-    private Texture mattoonFood;
+
+	private Texture mattoonFood;
 	private SpriteBatch batch;
 	int x = 0;
 	
