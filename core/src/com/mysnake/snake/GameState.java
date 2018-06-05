@@ -161,7 +161,8 @@ public class GameState {
       }
     }
 
-    if (mBody.first().getX() == portal.getX() && mBody.first().getY() == portal.getY()) {
+    if (mBody.first().getX() == portal.getX() && mBody.first().getY() == portal.getY()
+        && !spawnFood) {
       spawnFood = true;
       currentMap++;
     }
@@ -208,7 +209,7 @@ public class GameState {
       mBody.removeLast();
     }
 
-    if (score == 1 && currentMap != 3) {
+    if (score == 5 && currentMap != 3) {
       portal.randPos(boardSize);
 
       if (currentMap == 1) {

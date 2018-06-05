@@ -12,8 +12,8 @@ public class Food {
   }
 
   public void randPos(int boardSize) {
-    x = MathUtils.random(boardSize - 2);
-    y = MathUtils.random(boardSize - 34);
+    x = MathUtils.random(1, boardSize - 2);
+    y = MathUtils.random(1, boardSize - 34);
   }
 
   public int getX() {
